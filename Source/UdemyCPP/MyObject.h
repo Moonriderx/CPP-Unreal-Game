@@ -13,13 +13,14 @@ UCLASS(Blueprintable) // this will allow us to create a blueprint derived from t
 class UDEMYCPP_API UMyObject : public UObject
 {
 	GENERATED_BODY()
-
+public:
 	UMyObject();
 
-	UPROPERTY() // this exposes the float variable to the reflection system
+	UPROPERTY(BlueprintReadOnly, Category = "My Variables") // this exposes the float variable to the reflection system, BPReadWrite will give access to the variables in our BP. 
+		//In order to work it has to be in the public section
 	float MyFloat;
 
-    UFUNCTION() // does the same but for the functions
+    UFUNCTION(BlueprintCallable, Category = "My Functions") // does the same but for the functions
 	void MyFunction();
 	  
 
