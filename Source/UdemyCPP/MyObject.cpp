@@ -3,3 +3,12 @@
 
 #include "MyObject.h"
 
+UMyObject::UMyObject()
+{
+	MyFloat = 0;
+	
+}
+
+void UMyObject::MyFunction()
+{
+}

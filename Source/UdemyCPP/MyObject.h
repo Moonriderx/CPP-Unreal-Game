@@ -14,4 +14,14 @@ class UDEMYCPP_API UMyObject : public UObject
 {
 	GENERATED_BODY()
 
+	UMyObject();
+
+	UPROPERTY() // this exposes the float variable to the reflection system
+	float MyFloat;
+
+    UFUNCTION() // does the same but for the functions
+	void MyFunction();
+	  
+
+
 };
