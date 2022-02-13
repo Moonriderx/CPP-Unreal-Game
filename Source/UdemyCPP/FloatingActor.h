@@ -18,9 +18,16 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "ActorMeshComponents")
 	UStaticMeshComponent* StaticMesh; // Creating a POINTER to UStaticMeshComponent variable (that does not mean we've created the actual component)
 
-	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "FloatingActor Vectors") // EditInstanceOnly means that the particular "InitialLocation" is editable only on an instance of a FloatingActor
+	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "FloatingActor Variables") // EditInstanceOnly means that the particular "InitialLocation" is editable only on an instance of a FloatingActor
 		// its only editable on the instance, not on the default BP
-	FVector InitialLocation = FVector(0.0f, 0.0f, 180.0f);
+	FVector InitialLocation;
+
+	// Location of the actor when dragged in from the editor
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadWrite, Category = "FloatingActor Variables")
+	FVector PlacedLocation;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "FloatingActor Variables") //EditDefaultsOnly it allows us to modify the variable in the default BP
+	bool bInitializeFloatingActorLocations;
 
 
 protected:

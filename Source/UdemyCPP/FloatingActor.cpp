@@ -10,6 +10,13 @@ AFloatingActor::AFloatingActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CustomStaticMesh"));
+
+	// Typically we initialize things in the constructor
+
+	InitialLocation = FVector(0.0f);
+	PlacedLocation = FVector(0.0f);
+
+	bInitializeFloatingActorLocations = false;
 	
 
 }
@@ -19,7 +26,13 @@ void AFloatingActor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SetActorLocation(InitialLocation);
+	PlacedLocation = GetActorLocation();
+
+	if (bInitializeFloatingActorLocations)
+	{
+		SetActorLocation(InitialLocation);
+	}
+	
 	
 }
 
