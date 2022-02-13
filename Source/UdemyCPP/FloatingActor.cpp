@@ -15,8 +15,11 @@ AFloatingActor::AFloatingActor()
 
 	InitialLocation = FVector(0.0f);
 	PlacedLocation = FVector(0.0f);
+	WorldOrigin = FVector(0.0f, 0.0f, 0.0f);
+	InitialDirection = FVector(0.0f, 0.0f, 0.0f);
 
 	bInitializeFloatingActorLocations = false;
+	bCanFloat = false;
 	
 
 }
@@ -40,6 +43,14 @@ void AFloatingActor::BeginPlay()
 void AFloatingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (bCanFloat) 
+	{
+		FHitResult HitResult;
+		AddActorLocalOffset(InitialDirection, false, &HitResult);
+		// AddActorLocalRotation(FRotator(1.0f, 1.0f, 1.0f), false, &HitResult); it will rotate the actor
+		
+	}
 
 }
 
