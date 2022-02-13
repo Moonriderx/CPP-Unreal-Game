@@ -10,6 +10,7 @@ AFloatingActor::AFloatingActor()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CustomStaticMesh"));
+	
 
 }
 
@@ -17,6 +18,8 @@ AFloatingActor::AFloatingActor()
 void AFloatingActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	SetActorLocation(InitialLocation);
 	
 }
 
