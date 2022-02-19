@@ -29,6 +29,12 @@ public:
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "FloatingActor Variables")
 	FVector WorldOrigin;
 
+	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category = "FloatingActor Variables")
+	FVector InitialForce;
+
+	UPROPERTY(BlueprintReadWrite, EditInstanceOnly, Category = "FloatingActor Variables")
+	FVector InitialTorque;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FloatingActor Variables") // EditAnywhere gives us to edit the variable anywhere. In the BP, in the instance etc..
 	FVector InitialDirection;
 

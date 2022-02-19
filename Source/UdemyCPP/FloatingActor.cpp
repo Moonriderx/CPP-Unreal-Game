@@ -2,6 +2,7 @@
 
 
 #include "FloatingActor.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AFloatingActor::AFloatingActor()
@@ -17,6 +18,8 @@ AFloatingActor::AFloatingActor()
 	PlacedLocation = FVector(0.0f);
 	WorldOrigin = FVector(0.0f, 0.0f, 0.0f);
 	InitialDirection = FVector(0.0f, 0.0f, 0.0f);
+	InitialForce = FVector(6000000.f, 0.0f, 0.0f);
+	InitialTorque = FVector(6000000.f, 0.0f, 0.0f);
 
 	bInitializeFloatingActorLocations = false;
 	bCanFloat = false;
@@ -36,8 +39,10 @@ void AFloatingActor::BeginPlay()
 		SetActorLocation(InitialLocation);
 	}
 
-	FHitResult HitResult;
-	FVector LocalOffset = FVector(200.f, 0.0f, 0.0f);
+	
+	StaticMesh->AddForce(InitialForce);
+	StaticMesh->AddTorqueInRadians(InitialTorque);
+	
 
 	FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
 
@@ -69,8 +74,8 @@ void AFloatingActor::Tick(float DeltaTime)
 
 		// if Sweeping is enabled, we can collide with an object even simulate physics is off
 
-		FRotator Rotation = FRotator(0.0f, 1.0f, 0.0f);
-		AddActorLocalRotation(Rotation);
+		//FRotator Rotation = FRotator(0.0f, 1.0f, 0.0f);
+		//AddActorLocalRotation(Rotation);
 	}
 
 }
