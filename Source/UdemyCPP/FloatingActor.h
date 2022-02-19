@@ -15,7 +15,7 @@ public:
 	// Sets default values for this actor's properties
 	AFloatingActor();
 
-	UPROPERTY(BlueprintReadWrite, Category = "ActorMeshComponents")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "ActorMeshComponents")
 	UStaticMeshComponent* StaticMesh; // Creating a POINTER to UStaticMeshComponent variable (that does not mean we've created the actual component)
 
 	UPROPERTY(EditInstanceOnly, BlueprintReadWrite, Category = "FloatingActor Variables") // EditInstanceOnly means that the particular "InitialLocation" is editable only on an instance of a FloatingActor
@@ -32,7 +32,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FloatingActor Variables") // EditAnywhere gives us to edit the variable anywhere. In the BP, in the instance etc..
 	FVector InitialDirection;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "FloatingActor Variables") //EditDefaultsOnly it allows us to modify the variable in the default BP
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FloatingActor Variables") //EditDefaultsOnly it allows us to modify the variable in the default BP
 	bool bInitializeFloatingActorLocations;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FloatingActor Variables")

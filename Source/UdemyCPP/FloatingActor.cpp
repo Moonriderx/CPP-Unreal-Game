@@ -35,6 +35,16 @@ void AFloatingActor::BeginPlay()
 	{
 		SetActorLocation(InitialLocation);
 	}
+
+	FHitResult HitResult;
+	FVector LocalOffset = FVector(200.f, 0.0f, 0.0f);
+
+	FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
+
+	//AddActorLocalOffset(LocalOffset, true, &HitResult);
+	AddActorLocalRotation(Rotation);
+
+	
 	
 	
 }
@@ -44,12 +54,23 @@ void AFloatingActor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+
+
 	if (bCanFloat) 
 	{
 		FHitResult HitResult;
-		AddActorLocalOffset(InitialDirection, false, &HitResult);
+		AddActorLocalOffset(InitialDirection, true, &HitResult);
 		// AddActorLocalRotation(FRotator(1.0f, 1.0f, 1.0f), false, &HitResult); it will rotate the actor
+
+		FVector HitLocation = HitResult.Location;
 		
+		// Simple example of how to get an information from the hit result
+		// UE_LOG(LogTemp, Warning, TEXT("Hit Location: X = %f, Y = %f, Z = %f"), HitLocation.X, HitLocation.Y, HitLocation.Z);
+
+		// if Sweeping is enabled, we can collide with an object even simulate physics is off
+
+		FRotator Rotation = FRotator(0.0f, 1.0f, 0.0f);
+		AddActorLocalRotation(Rotation);
 	}
 
 }
