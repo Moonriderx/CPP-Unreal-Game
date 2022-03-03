@@ -32,6 +32,16 @@ void AFloatingActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	float InitialX = FMath::FRandRange(-500.f, 500.f);
+	float InitialY = FMath::FRandRange(-500.f, 500.f);
+	float InitialZ = FMath::FRandRange(0.f, 500.f);
+
+	InitialLocation.X = InitialX;
+	InitialLocation.Y = InitialY;
+	InitialLocation.Z = InitialZ;
+
+	//InitialLocation *= 20.f; // It will return a random number between 0 and 20. Initial FRand Func returns number between 0 and 1. We dont need it in FRandRange
+
 	PlacedLocation = GetActorLocation();
 
 	if (bInitializeFloatingActorLocations)
