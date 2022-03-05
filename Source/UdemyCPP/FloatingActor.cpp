@@ -103,7 +103,7 @@ void AFloatingActor::Tick(float DeltaTime)
 
 		FVector NewLocation = GetActorLocation();
 
-		NewLocation.Z = BaseZLocation + A *  FMath::Sin(B * RunningTime - C) + D; 
+		NewLocation.Z = BaseZLocation + A *  FMath::Sin(B * RunningTime - C) + D; // Period = 2 * PI / ABS(B)
 		SetActorLocation(NewLocation);
 		RunningTime += DeltaTime;
 		
