@@ -23,6 +23,13 @@ AFloatingActor::AFloatingActor()
 
 	bInitializeFloatingActorLocations = false;
 	bCanFloat = false;
+
+	RunningTime = 0.f;
+
+	A = 0.f;
+	B = 0.f;
+	C = 0.f;
+	D = 0.f;
 	
 
 }
@@ -49,15 +56,17 @@ void AFloatingActor::BeginPlay()
 		SetActorLocation(InitialLocation);
 	}
 
+	BaseZLocation = PlacedLocation.Z;
+
 	
-	StaticMesh->AddForce(InitialForce);
-	StaticMesh->AddTorqueInRadians(InitialTorque);
+	//StaticMesh->AddForce(InitialForce);
+	//StaticMesh->AddTorqueInRadians(InitialTorque);
 	
 
-	FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
+	//FRotator Rotation = FRotator(0.0f, 0.0f, 0.0f);
 
-	//AddActorLocalOffset(LocalOffset, true, &HitResult);
-	AddActorLocalRotation(Rotation);
+	//AddActoLocalOffset(LocalOffset, true, &HitResult);
+	//AddActorLocalRotation(Rotation);
 
 	
 	
@@ -73,19 +82,31 @@ void AFloatingActor::Tick(float DeltaTime)
 
 	if (bCanFloat) 
 	{
-		FHitResult HitResult;
+		/*FHitResult HitResult;
 		AddActorLocalOffset(InitialDirection, true, &HitResult);
-		// AddActorLocalRotation(FRotator(1.0f, 1.0f, 1.0f), false, &HitResult); it will rotate the actor
+		 AddActorLocalRotation(FRotator(1.0f, 1.0f, 1.0f), false, &HitResult); it will rotate the actor
 
 		FVector HitLocation = HitResult.Location;
 		
-		// Simple example of how to get an information from the hit result
-		// UE_LOG(LogTemp, Warning, TEXT("Hit Location: X = %f, Y = %f, Z = %f"), HitLocation.X, HitLocation.Y, HitLocation.Z);
+		 Simple example of how to get an information from the hit result
+		 UE_LOG(LogTemp, Warning, TEXT("Hit Location: X = %f, Y = %f, Z = %f"), HitLocation.X, HitLocation.Y, HitLocation.Z);
 
-		// if Sweeping is enabled, we can collide with an object even simulate physics is off
+		if Sweeping is enabled, we can collide with an object even simulate physics is off
 
-		//FRotator Rotation = FRotator(0.0f, 1.0f, 0.0f);
-		//AddActorLocalRotation(Rotation);
+		FRotator Rotation = FRotator(0.0f, 1.0f, 0.0f);
+		AddActorLocalRotation(Rotation);*/
+
+
+		//-----------------------------------------------------------------------------------------------------//
+
+		// Using Sine Function //
+
+		FVector NewLocation = GetActorLocation();
+
+		NewLocation.Z = BaseZLocation + A *  FMath::Sin(B * RunningTime - C) + D; 
+		SetActorLocation(NewLocation);
+		RunningTime += DeltaTime;
+		
 	}
 
 }

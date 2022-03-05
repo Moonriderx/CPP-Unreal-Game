@@ -44,6 +44,30 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FloatingActor Variables")
 	bool bCanFloat;
 
+private:
+
+	float RunningTime;
+	
+	float BaseZLocation;
+
+public:
+
+	// Amplitude (how much we oscillate up and down
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FloatingActor Variables")
+	float A;
+
+	// Period (how fast the object will move between the targets) Period is 2 * PI / ABS(B)
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FloatingActor Variables")
+	float B;
+
+	// Phase Shift is ( C / B )
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FloatingActor Variables")
+	float C;
+
+	// Vertical Shift is D
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "FloatingActor Variables")
+	float D;
+
 
 protected:
 	// Called when the game starts or when spawned
