@@ -33,6 +33,13 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 		class USphereComponent* SphereComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = "Mesh")
+	    class UCameraComponent* Camera;
+
+	UPROPERTY(VisibleAnywhere, Category = "Mesh")
+	    class USpringArmComponent* SpringArm; // control the camera's motion
+
+
 	FORCEINLINE UStaticMeshComponent* GetMeshComponent() // it makes the function inline
 	{
 		return MeshComponent;
@@ -53,4 +60,35 @@ public:
 	{
 		SphereComponent = Sphere;
 	}
+
+
+
+
+	FORCEINLINE UCameraComponent* GetCameraComponent() // it makes the function inline
+	{
+		return Camera;
+	}
+
+	FORCEINLINE void SetCameraComponent(UCameraComponent* InCamera)
+	{
+		Camera = InCamera;
+	}
+
+
+	FORCEINLINE USpringArmComponent* GetSpringArmComponent() // it makes the function inline
+	{
+		return SpringArm;
+	}
+
+	FORCEINLINE void SetSpringArmComponent(USpringArmComponent* InSpringArm)
+	{
+		SpringArm = InSpringArm;
+	}
+
+
+
+private:
+
+	void MoveForward(float input);
+	void MoveRight(float input);
 };
