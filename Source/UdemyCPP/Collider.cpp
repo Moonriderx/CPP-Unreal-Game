@@ -8,6 +8,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "ColliderMovementComponent.h"
 
 // Sets default values
 ACollider::ACollider()
@@ -15,9 +16,10 @@ ACollider::ACollider()
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>(TEXT("Sphere Component"));
+	SetRootComponent(SphereComponent);
+
 	SphereComponent->SetupAttachment(GetRootComponent());
 	SphereComponent->InitSphereRadius(40.f);
 	SphereComponent->SetCollisionProfileName(TEXT("Pawn"));
@@ -44,6 +46,9 @@ ACollider::ACollider()
 
 		Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 		Camera->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+
+		OurMovementComponent = CreateDefaultSubobject<UColliderMovementComponent>(TEXT("Our Movement Component"));
+		OurMovementComponent->UpdatedComponent = RootComponent; 
 
 		AutoPossessPlayer = EAutoReceiveInput::Player0;
 
@@ -79,12 +84,24 @@ void ACollider::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ACollider::MoveForward(float input)
 {
 	FVector Forward = GetActorForwardVector();
-	AddMovementInput(input * Forward);
+	if (OurMovementComponent)
+	{
+		OurMovementComponent->AddInputVector(Forward * input);
+	}
 }
 void ACollider::MoveRight(float input)
 {
 	FVector Right = GetActorRightVector();
-	AddMovementInput(input * Right);
 
+	if (OurMovementComponent) 
+	{
+		OurMovementComponent->AddInputVector(Right * input);
+	}
+
+}
+
+UPawnMovementComponent* ACollider::GetMovementComponent() const
+{
+	return OurMovementComponent;
 }
 

@@ -39,6 +39,11 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Mesh")
 	    class USpringArmComponent* SpringArm; // control the camera's motion
 
+	UPROPERTY(VisibleAnywhere, Category = "Movement")
+	class UColliderMovementComponent* OurMovementComponent;
+
+	virtual UPawnMovementComponent* GetMovementComponent() const override; // override the GetMovementComponent
+
 
 	FORCEINLINE UStaticMeshComponent* GetMeshComponent() // it makes the function inline
 	{
