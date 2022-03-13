@@ -4,6 +4,7 @@
 #include "MainCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Engine/world.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -48,7 +49,19 @@ void AMainCharacter::Tick(float DeltaTime)
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	check(PlayerInputComponent);
 
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
+	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
+
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("TurnRate", this, &AMainCharacter::TurnAtRate);
+	PlayerInputComponent->BindAxis("LookUpRate", this, &AMainCharacter::LookUpAtRate);
+		
 }	
 
 void AMainCharacter::MoveForward(float Value)
@@ -78,5 +91,15 @@ void AMainCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 
+}
+
+void AMainCharacter::TurnAtRate(float Rate)
+{ 
+	AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AMainCharacter::LookUpAtRate(float Rate)
+{
+	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
