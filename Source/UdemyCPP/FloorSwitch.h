@@ -26,6 +26,14 @@ public:
 	/** Door to move when the floorSwitch is stepped on */
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Floor Switch")
 	UStaticMeshComponent* DoorMesh;
+	
+	/** Initial Location for the Door */
+	UPROPERTY(BlueprintReadWrite, Category = "Floor Switch")
+	FVector InitialDoorLocation;
+
+	/** Initial Location for the Floor Switch */
+	UPROPERTY(BlueprintReadWrite, Category = "Floor Switch")
+	FVector InitialSwitchLocation;
 
 protected:
 	// Called when the game starts or when spawned
@@ -41,4 +49,23 @@ public:
 
 	UFUNCTION()
 	void OnOverlapEnd(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Floor Switch") // make the function play a role as event. No need to implement in CPP, can do directly in BP's
+	void RaiseDoor(); 
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Floor Switch") // make the function play a role as event. No need to implement in CPP, can do directly in BP's
+	void LowerDoor();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Floor Switch") // make the function play a role as event. No need to implement in CPP, can do directly in BP's
+	void RaiseFloorSwitch();
+
+	UFUNCTION(BlueprintImplementableEvent, Category = "Floor Switch") // make the function play a role as event. No need to implement in CPP, can do directly in BP's
+    void LowerFloorSwitch();
+
+	UFUNCTION(BlueprintCallable, Category = "Floor Switch") // we will call this function from BP, but the functionality will be scripted c++
+	void UpdateDoorLocation(float Z);
+
+	UFUNCTION(BlueprintCallable, Category = "Floor Switch") // we will call this function from BP, but the functionality will be scripted c++
+	void UpdateFloorSwitchLocation(float Z);
 };
+ 
