@@ -19,7 +19,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item | Collision")
 	class USphereComponent* CollisionVolume;
 
-	class UStaticMeshComponent* Item;
 
 protected:
 	// Called when the game starts or when spawned
