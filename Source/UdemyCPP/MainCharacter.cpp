@@ -45,7 +45,11 @@ AMainCharacter::AMainCharacter()
 	/** Since we are not going to change ofter the collision capsule size, we can hardcode it */
 	GetCapsuleComponent()->SetCapsuleSize(34.f, 88.f);
 
-
+	MaxHealth = 100.f;
+	Health = 65.f;
+	MaxStamina = 350.f;
+	Stamina = 120.f;
+	Coins = 0;
 
 }
 
