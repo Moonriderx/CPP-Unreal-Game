@@ -50,6 +50,8 @@ AMainCharacter::AMainCharacter()
 	MaxStamina = 350.f;
 	Stamina = 120.f;
 	Coins = 0;
+	RunningSpeed = 650.f;
+	SprintingSpeed = 950.f;
 
 }
 
@@ -147,5 +149,18 @@ void AMainCharacter::TurnAtRate(float Rate)
 void AMainCharacter::LookUpAtRate(float Rate)
 {
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AMainCharacter::SetMovementStatus(EMovementStatus Status)
+{
+	MovementStatus = Status; // change the status equal to the movement status that is passed in
+	if (MovementStatus == EMovementStatus::EMS_Sprinting) 
+	{
+		GetCharacterMovement()->MaxWalkSpeed = SprintingSpeed;
+	}
+	else
+	{
+		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
+	}
 }
 
