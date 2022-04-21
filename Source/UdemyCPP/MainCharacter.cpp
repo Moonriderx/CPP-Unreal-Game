@@ -52,6 +52,7 @@ AMainCharacter::AMainCharacter()
 	Coins = 0;
 	RunningSpeed = 650.f;
 	SprintingSpeed = 950.f;
+	bShiftKeyDown = false;
 
 }
 
@@ -101,6 +102,9 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::ShiftKeyDown);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::ShiftKeyUp);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
@@ -162,5 +166,15 @@ void AMainCharacter::SetMovementStatus(EMovementStatus Status)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 	}
+}
+
+void AMainCharacter::ShiftKeyDown()
+{
+	bShiftKeyDown = true;
+}
+
+void AMainCharacter::ShiftKeyUp()
+{
+	bShiftKeyDown = false;
 }
 

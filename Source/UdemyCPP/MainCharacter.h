@@ -36,6 +36,16 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Sprinting")
 	float SprintingSpeed;
 
+	bool bShiftKeyDown;
+
+    /** Press down to enable sprinting */
+	void ShiftKeyDown();
+
+	/** Release down to disable sprinting */
+	void ShiftKeyUp();
+
+
+
 	/** Camera boom positioning the camera behind the player */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class USpringArmComponent* CameraBoom;
