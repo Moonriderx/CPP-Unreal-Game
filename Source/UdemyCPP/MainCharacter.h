@@ -23,7 +23,7 @@ enum class EStaminaStatus : uint8
 	ESS_Exhausted UMETA(DisplayName = "Exhausted"),
 	ESS_ExhaustedRecovering UMETA(DisplayName = "ExhaustedRecovering"),
 
-	ESS_MAX UMETA(DisplayName = "DefaultMax"),
+	ESS_MAX UMETA(DisplayName = "DefaultMax")
 
 };
 
