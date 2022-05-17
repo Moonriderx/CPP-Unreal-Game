@@ -44,6 +44,8 @@ void AWeapon::Equip(AMainCharacter* Char)
 		if (RightHandSocket)
 		{
 			RightHandSocket->AttachActor(this, Char->GetMesh()); // attach the actor to the skeleton
+			bRotate = false;
+		    
 		}
 
 	}
