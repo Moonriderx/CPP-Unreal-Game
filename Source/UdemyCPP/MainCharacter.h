@@ -104,6 +104,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player Stats")
 	int32 Coins;
 
+
+
 	void DecrementHealth(float Amount);
 
 	void Die();
@@ -140,5 +142,10 @@ public:
 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Items");
+	class AWeapon* EquippedWeapon;
+
+	FORCEINLINE void SetEquippedItem(AWeapon* WeaponToSet) { EquippedWeapon = WeaponToSet; } // setter
 
 };
