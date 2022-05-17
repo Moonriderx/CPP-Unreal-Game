@@ -7,6 +7,7 @@
 #include "Engine/world.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -89,6 +90,8 @@ void AMainCharacter::IncrementCoins(int32 Amount)
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	UKismetSystemLibrary::DrawDebugSphere(this, GetActorLocation() + FVector(0, 0, 75.f), 25.f, 12, FLinearColor::Red, 5.f, 2.f);
 
 	
 }
