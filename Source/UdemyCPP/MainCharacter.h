@@ -150,7 +150,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Items");
 	class AWeapon* EquippedWeapon;
 
-	FORCEINLINE void SetEquippedItem(AWeapon* WeaponToSet) { EquippedWeapon = WeaponToSet; } // setter
+	void SetEquippedWeapon(AWeapon* WeaponToSet);
+
+	FORCEINLINE AWeapon* GetEquippedWeapon() { return EquippedWeapon; } // setter
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Items");
 	class AItem* ActiveOverlappingItem;

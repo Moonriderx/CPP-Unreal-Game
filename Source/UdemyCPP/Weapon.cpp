@@ -61,7 +61,8 @@ void AWeapon::Equip(AMainCharacter* Char)
 		{
 			RightHandSocket->AttachActor(this, Char->GetMesh()); // attach the actor to the skeleton
 			bRotate = false;
-			Char->SetEquippedItem(this);
+
+			Char->SetEquippedWeapon(this);
 			Char->SetActiveOverlappingItem(nullptr); // as soon as we've equip the item
 		    
 		}

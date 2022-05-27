@@ -277,6 +277,16 @@ void AMainCharacter::LMBUp()
 	bLMBDown = false;
 }
 
+void AMainCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
+{
+	if (EquippedWeapon)
+	{
+		EquippedWeapon->Destroy();
+	}
+	EquippedWeapon = WeaponToSet;
+
+}
+
 void AMainCharacter::SetMovementStatus(EMovementStatus Status)
 {
 	MovementStatus = Status; // change the status equal to the movement status that is passed in

@@ -26,6 +26,7 @@ public:
 
 	AWeapon();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Item")
 	EWeaponState WeaponState;
 
 
