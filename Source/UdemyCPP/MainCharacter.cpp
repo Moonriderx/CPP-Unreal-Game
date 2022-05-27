@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Weapon.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -54,6 +55,7 @@ AMainCharacter::AMainCharacter()
 	RunningSpeed = 650.f;
 	SprintingSpeed = 950.f;
 	bShiftKeyDown = false;
+	bLMBDown = false;
 
 	// Initialize Enums
 	MovementStatus = EMovementStatus::EMS_Normal;
@@ -204,6 +206,9 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMainCharacter::ShiftKeyDown);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::ShiftKeyUp);
 
+	PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &AMainCharacter::LMBDown);
+	PlayerInputComponent->BindAction("LMB", IE_Released, this, &AMainCharacter::LMBUp);
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMainCharacter::MoveRight);
 
@@ -251,6 +256,25 @@ void AMainCharacter::TurnAtRate(float Rate)
 void AMainCharacter::LookUpAtRate(float Rate)
 {
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AMainCharacter::LMBDown()
+{
+	bLMBDown = true;
+	if (ActiveOverlappingItem)
+	{
+		AWeapon* Weapon = Cast<AWeapon>(ActiveOverlappingItem);
+		if (Weapon) // if the cast succeed
+		{
+			Weapon->Equip(this);
+			SetActiveOverlappingItem(nullptr);
+		}
+	}
+}
+
+void AMainCharacter::LMBUp()
+{
+	bLMBDown = false;
 }
 
 void AMainCharacter::SetMovementStatus(EMovementStatus Status)
