@@ -54,6 +54,7 @@ AMainCharacter::AMainCharacter()
 	Coins = 0;
 	RunningSpeed = 650.f;
 	SprintingSpeed = 950.f;
+	ExhaustedSpeed = 400.f;
 	bShiftKeyDown = false;
 	bLMBDown = false;
 
@@ -168,11 +169,14 @@ void AMainCharacter::Tick(float DeltaTime)
 		if (bShiftKeyDown)
 		{
 			Stamina = 0.f;
+			
+			
 		}
 		else // shift key up
 		{
 			SetStaminaStatus(EStaminaStatus::ESS_ExhaustedRecovering);
 			Stamina += DeltaStamina;
+			
 		}
 		SetMovementStatus(EMovementStatus::EMS_Normal);
 		break;
@@ -294,11 +298,18 @@ void AMainCharacter::SetMovementStatus(EMovementStatus Status)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintingSpeed;
 	}
+	else if (StaminaStatus == EStaminaStatus::ESS_ExhaustedRecovering)
+	{
+		GetCharacterMovement()->MaxWalkSpeed = ExhaustedSpeed;
+	}
 	else
 	{
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 	}
+	
 }
+
+
 
 void AMainCharacter::ShiftKeyDown()
 {
