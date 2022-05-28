@@ -188,7 +188,7 @@ void AMainCharacter::Tick(float DeltaTime)
 		{
 			Stamina += DeltaStamina;
 		}
-		SetMovementStatus(EMovementStatus::EMS_Normal);
+		SetMovementStatus(EMovementStatus::EMS_ExhaustedWalking);
 		break;
 	default:
 		; // empty statement
