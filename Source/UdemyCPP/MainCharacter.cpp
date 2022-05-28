@@ -94,8 +94,6 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	UKismetSystemLibrary::DrawDebugSphere(this, GetActorLocation() + FVector(0, 0, 75.f), 25.f, 12, FLinearColor::Red, 5.f, 2.f);
-
 	
 }
 
@@ -178,7 +176,7 @@ void AMainCharacter::Tick(float DeltaTime)
 			Stamina += DeltaStamina;
 			
 		}
-		SetMovementStatus(EMovementStatus::EMS_Normal);
+		SetMovementStatus(EMovementStatus::EMS_ExhaustedWalking);
 		break;
 	case EStaminaStatus::ESS_ExhaustedRecovering:
 		if (Stamina + DeltaStamina >= MinSprintStamina)
@@ -298,7 +296,7 @@ void AMainCharacter::SetMovementStatus(EMovementStatus Status)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = SprintingSpeed;
 	}
-	else if (StaminaStatus == EStaminaStatus::ESS_ExhaustedRecovering)
+	else if (MovementStatus == EMovementStatus::EMS_ExhaustedWalking)
 	{
 		GetCharacterMovement()->MaxWalkSpeed = ExhaustedSpeed;
 	}
