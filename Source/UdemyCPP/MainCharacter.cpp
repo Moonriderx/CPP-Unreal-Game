@@ -55,6 +55,7 @@ AMainCharacter::AMainCharacter()
 	RunningSpeed = 650.f;
 	SprintingSpeed = 950.f;
 	ExhaustedSpeed = 400.f;
+	DashDistance = 6000.f;
 	bShiftKeyDown = false;
 	bLMBDown = false;
 
@@ -208,6 +209,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMainCharacter::ShiftKeyDown);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::ShiftKeyUp);
 
+	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &AMainCharacter::Dashing);
+
 	PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &AMainCharacter::LMBDown);
 	PlayerInputComponent->BindAction("LMB", IE_Released, this, &AMainCharacter::LMBUp);
 
@@ -305,6 +308,19 @@ void AMainCharacter::SetMovementStatus(EMovementStatus Status)
 		GetCharacterMovement()->MaxWalkSpeed = RunningSpeed;
 	}
 	
+}
+
+void AMainCharacter::Dashing()
+{
+
+	const FVector ForwardDir = this->GetActorRotation().Vector();
+
+	if (Stamina > MinSprintStamina) 
+	{
+		LaunchCharacter(ForwardDir * DashDistance, true, true);
+		Stamina = Stamina - 40;
+	}
+    // TODO: Fix the long dash in air and change the state if stamina is low
 }
 
 

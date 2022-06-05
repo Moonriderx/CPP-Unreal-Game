@@ -6,8 +6,10 @@
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
 
+/** Movement Status Enum */
+
 UENUM(BlueprintType)
-enum class EMovementStatus : uint8 // we will hold the movementStatus here
+enum class EMovementStatus : uint8
 {
 	EMS_Normal UMETA(DisplayName = "Normal"),
 	EMS_Sprinting UMETA(DisplayName = "Sprinting"),
@@ -15,6 +17,8 @@ enum class EMovementStatus : uint8 // we will hold the movementStatus here
 
 	EMS_MAX UMETA(DisplayName = "DefaultMAX")
 };
+
+/** Stamina Status Enum */
 
 UENUM(BlueprintType)
 enum class EStaminaStatus : uint8 
@@ -47,11 +51,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float StaminaDrainRate;
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
 	float MinSprintStamina;
-
-	/** Set movement status and running speed */
-	void SetMovementStatus(EMovementStatus Status);
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Running")
 	float RunningSpeed;
@@ -64,13 +66,10 @@ public:
 
 	bool bShiftKeyDown;
 
-    /** Press down to enable sprinting */
-	void ShiftKeyDown();
+	/** Dash Montage */
 
-	/** Release down to disable sprinting */
-	void ShiftKeyUp();
-
-
+	UPROPERTY(EditAnywhere)
+	UAnimMontage* DashMontage;
 
 	/** Camera boom positioning the camera behind the player */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -115,6 +114,22 @@ public:
 	void Die();
 
 	void IncrementCoins(int32 Amount);
+
+	/** Press down to enable sprinting */
+	void ShiftKeyDown();
+
+	/** Release down to disable sprinting */
+	void ShiftKeyUp();
+
+	/** Set movement status and running speed */
+	void SetMovementStatus(EMovementStatus Status);
+
+protected:
+
+	void Dashing();
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dashing")
+	float DashDistance;
 	
 
 protected:
@@ -160,6 +175,7 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Items");
 	class AItem* ActiveOverlappingItem;
+
 	FORCEINLINE void SetActiveOverlappingItem(AItem* Item) { ActiveOverlappingItem = Item; } // setter
 
 };
