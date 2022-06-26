@@ -319,8 +319,11 @@ void AMainCharacter::Dashing()
 	{
 		LaunchCharacter(ForwardDir * DashDistance, true, true);
 		Stamina = Stamina - 40;
+
+		//Change the state if stamina is low
+		SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
 	}
-    // TODO: Fix the long dash in air and change the state if stamina is low
+    // TODO: Fix the long dash in air
 }
 
 
