@@ -38,8 +38,16 @@ class UDEMYCPP_API AMainCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	AMainCharacter();
+	// We also need to make sure the Character class uses our newly created component instead of the base one.
+	AMainCharacter(const FObjectInitializer& ObjectInitializer);
+
+	/** the ACharacter still holds a reference to the UCharacterMovementComponent base type. 
+	Consequently, we would need to cast it every time we use it. It’s a good idea to cache the cast and retrieve it with a function:
+	*/
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE UCustomCharacterMovementComponent* GetCustomCharacterMovement() const { return MovementComponent; }
+
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enums")
 	EMovementStatus MovementStatus;
@@ -130,6 +138,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Dashing")
 	float DashDistance;
+
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly)
+	UCustomCharacterMovementComponent* MovementComponent;
 	
 
 protected:

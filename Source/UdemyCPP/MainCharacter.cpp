@@ -9,12 +9,19 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Weapon.h"
+#include <UdemyCPP/CustomCharacterMovementComponent.h>
 
 // Sets default values
-AMainCharacter::AMainCharacter()
+
+// We also need to make sure the Character class uses our newly created component instead of the base one:
+AMainCharacter::AMainCharacter(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	// cache the cast and retrieve it with a function:
+	MovementComponent = Cast<UCustomCharacterMovementComponent>(GetCharacterMovement());
 
 	/** Create Camera Boom (pulls towards the player if there is a collision) */
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
@@ -67,6 +74,8 @@ AMainCharacter::AMainCharacter()
 	MinSprintStamina = 50.f;
 
 }
+
+
 
 void AMainCharacter::DecrementHealth(float Amount)
 {
@@ -323,7 +332,7 @@ void AMainCharacter::Dashing()
 		//Change the state if stamina is low
 		SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
 	}
-    // TODO: Fix the long dash in air
+    // TODO: Fix the long dash in air, test all the functionalities (shift + E goes directly into belowMinimum)
 }
 
 
@@ -337,4 +346,5 @@ void AMainCharacter::ShiftKeyUp()
 {
 	bShiftKeyDown = false;
 }
+
 
