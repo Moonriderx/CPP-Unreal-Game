@@ -9,7 +9,10 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Weapon.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 #include <UdemyCPP/CustomCharacterMovementComponent.h>
+
+
 
 // Sets default values
 
@@ -65,6 +68,7 @@ AMainCharacter::AMainCharacter(const FObjectInitializer& ObjectInitializer)
 	DashDistance = 6000.f;
 	bShiftKeyDown = false;
 	bLMBDown = false;
+	bCanDash = true;
 
 	// Initialize Enums
 	MovementStatus = EMovementStatus::EMS_Normal;
@@ -72,6 +76,8 @@ AMainCharacter::AMainCharacter(const FObjectInitializer& ObjectInitializer)
 
 	StaminaDrainRate = 25.f;
 	MinSprintStamina = 50.f;
+
+	
 
 }
 
@@ -103,6 +109,8 @@ void AMainCharacter::IncrementCoins(int32 Amount)
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+
 
 	
 }
@@ -291,6 +299,11 @@ void AMainCharacter::LMBUp()
 	bLMBDown = false;
 }
 
+void AMainCharacter::ResetDash()
+{
+	bCanDash = true;
+}
+
 void AMainCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
 {
 	if (EquippedWeapon)
@@ -324,14 +337,21 @@ void AMainCharacter::Dashing()
 
 	const FVector ForwardDir = this->GetActorRotation().Vector();
 
-	if (Stamina > MinSprintStamina) 
+	if (Stamina > MinSprintStamina && bCanDash) 
+	
 	{
+		bCanDash = false;
 		LaunchCharacter(ForwardDir * DashDistance, true, true);
 		Stamina = Stamina - 40;
 
 		//Change the state if stamina is low
 		SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+		GetWorld()->GetTimerManager().SetTimer(Handle, this, &AMainCharacter::ResetDash, 2.f);
+
 	}
+
+
+
     // TODO: Fix the long dash in air, test all the functionalities (shift + E goes directly into belowMinimum)
 }
 

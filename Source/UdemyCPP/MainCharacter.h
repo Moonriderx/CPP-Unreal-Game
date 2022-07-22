@@ -45,6 +45,10 @@ public:
 	Consequently, we would need to cast it every time we use it. It’s a good idea to cache the cast and retrieve it with a function:
 	*/
 
+	// FTimerHandle used for the delay
+	UPROPERTY()
+	FTimerHandle Handle;
+
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE UCustomCharacterMovementComponent* GetCustomCharacterMovement() const { return MovementComponent; }
 
@@ -73,6 +77,8 @@ public:
 	float ExhaustedSpeed;
 
 	bool bShiftKeyDown;
+
+	bool bCanDash;
 
 	/** Dash Montage */
 
@@ -173,6 +179,7 @@ public:
 	bool bLMBDown;
 	void LMBDown();
 	void LMBUp();
+	void ResetDash();
 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
