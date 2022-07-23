@@ -47,7 +47,7 @@ public:
 
 	// FTimerHandle used for the delay
 	UPROPERTY()
-	FTimerHandle Handle;
+	FTimerHandle DashDelay;
 
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE UCustomCharacterMovementComponent* GetCustomCharacterMovement() const { return MovementComponent; }

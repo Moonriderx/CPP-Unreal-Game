@@ -302,6 +302,7 @@ void AMainCharacter::LMBUp()
 void AMainCharacter::ResetDash()
 {
 	bCanDash = true;
+	GetWorldTimerManager().ClearTimer(DashDelay);
 }
 
 void AMainCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
@@ -337,21 +338,29 @@ void AMainCharacter::Dashing()
 
 	const FVector ForwardDir = this->GetActorRotation().Vector();
 
-	if (Stamina > MinSprintStamina && bCanDash) 
-	
-	{
-		bCanDash = false;
-		LaunchCharacter(ForwardDir * DashDistance, true, true);
-		Stamina = Stamina - 40;
-
-		//Change the state if stamina is low
-		SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
-		GetWorld()->GetTimerManager().SetTimer(Handle, this, &AMainCharacter::ResetDash, 2.f);
+	if (Stamina > MinSprintStamina && GetCharacterMovement()->Velocity != FVector::ZeroVector && bCanDash)  {
+		if (GetCharacterMovement()->IsMovingOnGround() == false) 
+		{
+			bCanDash = false;
+			LaunchCharacter(ForwardDir * DashDistance / 3, true, false);
+			Stamina = Stamina - 40;
+			//Change the state if stamina is low
+			SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+			GetWorld()->GetTimerManager().SetTimer(DashDelay, this, &AMainCharacter::ResetDash, 2.f);
+		}
+		else 
+		{
+			bCanDash = false;
+			LaunchCharacter(ForwardDir * DashDistance, true, false);
+			Stamina = Stamina - 40;
+			//Change the state if stamina is low
+			SetStaminaStatus(EStaminaStatus::ESS_BelowMinimum);
+			GetWorld()->GetTimerManager().SetTimer(DashDelay, this, &AMainCharacter::ResetDash, 2.f);
+		}
+		
 
 	}
-
-
-
+	// TODO: Find a smarter way to fix the dash during air be so slow and "open"
     // TODO: Fix the long dash in air, test all the functionalities (shift + E goes directly into belowMinimum)
 }
 
