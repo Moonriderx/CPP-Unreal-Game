@@ -45,12 +45,12 @@ public:
 	Consequently, we would need to cast it every time we use it. It’s a good idea to cache the cast and retrieve it with a function:
 	*/
 
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE UCustomCharacterMovementComponent* GetCustomCharacterMovement() const { return MovementComponent; }
+
 	// FTimerHandle used for the delay
 	UPROPERTY()
 	FTimerHandle DashDelay;
-
-	UFUNCTION(BlueprintPure)
-	FORCEINLINE UCustomCharacterMovementComponent* GetCustomCharacterMovement() const { return MovementComponent; }
 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Enums")

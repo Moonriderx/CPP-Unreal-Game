@@ -21,6 +21,7 @@ AMainCharacter::AMainCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UCustomCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// this can be turned off
 	PrimaryActorTick.bCanEverTick = true;
 
 	// cache the cast and retrieve it with a function:

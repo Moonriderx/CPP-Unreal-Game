@@ -19,8 +19,11 @@ public:
 protected:
 
 private:
-	/*
 
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
 	void SweepAndStoreWallHits();
 	
 	TArray<FHitResult> CurrentWallHits;
@@ -31,5 +34,6 @@ private:
 	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere)
 	int CollisionCapsuleHalfHeight = 72;
 
-	*/
+	FCollisionQueryParams ClimbQueryParams;
+
 };
