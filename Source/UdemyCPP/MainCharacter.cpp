@@ -10,7 +10,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Weapon.h"
 #include "Runtime/Engine/Public/TimerManager.h"
-#include <UdemyCPP/CustomCharacterMovementComponent.h>
+#include "UdemyCPP/CustomCharacterMovementComponent.h"
 
 
 
@@ -110,10 +110,8 @@ void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-
-
-	
 }
+
 
 // Called every frame
 void AMainCharacter::Tick(float DeltaTime)
@@ -213,6 +211,7 @@ void AMainCharacter::Tick(float DeltaTime)
 	}
 
 }
+
 
 // Called to bind functionality to input
 void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
