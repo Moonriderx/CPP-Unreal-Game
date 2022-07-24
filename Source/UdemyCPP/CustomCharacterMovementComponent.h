@@ -39,6 +39,8 @@ private:
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
+
 	void SweepAndStoreWallHits();
 
 	bool CanStartClimbing();

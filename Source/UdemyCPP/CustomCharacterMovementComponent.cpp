@@ -3,6 +3,7 @@
 
 #include "CustomCharacterMovementComponent.h"
 #include "GameFramework/Character.h"
+#include "CustomEnums.h"
 
 
 
@@ -18,6 +19,18 @@ void UCustomCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTic
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	SweepAndStoreWallHits();
+
+}
+
+void UCustomCharacterMovementComponent::OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity)
+{
+
+	if (CanStartClimbing())
+	{
+		SetMovementMode(EMovementMode::MOVE_Custom, ECustomMovementMode::CMOVE_Climbing);
+	}
+	
+	Super::OnMovementUpdated(DeltaSeconds, OldLocation, OldVelocity);
 
 }
 
