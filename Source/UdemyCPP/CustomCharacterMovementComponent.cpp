@@ -5,23 +5,6 @@
 #include "GameFramework/Character.h"
 #include "CustomEnums.h"
 
-
-
-void UCustomCharacterMovementComponent::TryClimbing()
-{
-
-	if (CanStartClimbing())
-	{
-		bWantsToClimb = true;
-	}
-
-}
-
-void UCustomCharacterMovementComponent::CancelClimbing()
-{
-	bWantsToClimb = false;
-}
-
 void UCustomCharacterMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -62,6 +45,7 @@ void UCustomCharacterMovementComponent::SweepAndStoreWallHits() /* the job of th
 	const FVector End = Start + UpdatedComponent->GetForwardVector();
 
 	TArray<FHitResult> Hits;
+	
 	const bool HitWall = GetWorld()->SweepMultiByChannel(Hits, Start, End, FQuat::Identity, ECC_WorldStatic, CollisionShape, ClimbQueryParams);
 
 	HitWall ? CurrentWallHits = Hits : CurrentWallHits.Reset();
@@ -121,4 +105,31 @@ bool UCustomCharacterMovementComponent::IsFacingSurface(const float Steepness) c
 
 
 	return EyeHeightTrace(BaseLength * SteepnessMultiplier);
+}
+
+
+void UCustomCharacterMovementComponent::TryClimbing()
+{
+
+	if (CanStartClimbing())
+	{
+		bWantsToClimb = true;
+	}
+
+}
+
+void UCustomCharacterMovementComponent::CancelClimbing()
+{
+	bWantsToClimb = false;
+}
+
+bool UCustomCharacterMovementComponent::IsClimbing() const
+{
+	return MovementMode == EMovementMode::MOVE_Custom && CustomMovementMode == ECustomMovementMode::CMOVE_Climbing; // set the modes
+}
+
+FVector UCustomCharacterMovementComponent::GetClimbSurfaceNormal() const
+{
+	// Temporary Solution
+	return CurrentWallHits.Num() > 0 ? CurrentWallHits[0].Normal : FVector::Zero();
 }

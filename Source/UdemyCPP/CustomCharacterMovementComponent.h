@@ -15,7 +15,12 @@ class UDEMYCPP_API UCustomCharacterMovementComponent : public UCharacterMovement
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintPure)
+	bool IsClimbing() const; /*check if the movement component mode is Custom, 
+							 and if the custom mode is Climbing we need a function to retrieve the climbing surface normal*/ 
 
+	UFUNCTION(BlueprintPure)
+	FVector GetClimbSurfaceNormal() const;
 
 	void TryClimbing(); // function that will enable climbing
 
