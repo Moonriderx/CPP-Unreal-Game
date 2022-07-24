@@ -20,11 +20,8 @@ protected:
 
 private:
 
-	virtual void BeginPlay() override;
-
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
-	void SweepAndStoreWallHits();
+	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "1.0", ClampMax = "75.0"))
+	float MinHorizontalDegreesToStartClimbing = 25.f; // Control minimum Angle
 	
 	TArray<FHitResult> CurrentWallHits;
 
@@ -35,5 +32,16 @@ private:
 	int CollisionCapsuleHalfHeight = 72;
 
 	FCollisionQueryParams ClimbQueryParams;
+
+private:
+
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	void SweepAndStoreWallHits();
+
+	bool CanStartClimbing();
+
 
 };

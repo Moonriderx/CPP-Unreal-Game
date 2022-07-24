@@ -18,7 +18,8 @@ void UCustomCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTic
 
 }
 
-void UCustomCharacterMovementComponent::SweepAndStoreWallHits()
+void UCustomCharacterMovementComponent::SweepAndStoreWallHits() /* the job of this function is to call SweetMultiByChannel with appropriate params
+ and store the hits it retrieves */
 {
 	const FCollisionShape CollisionShape = FCollisionShape::MakeCapsule(CollisionCapsuleRadius, CollisionCapsuleHalfHeight);
 
@@ -34,4 +35,32 @@ void UCustomCharacterMovementComponent::SweepAndStoreWallHits()
 
 	HitWall ? CurrentWallHits = Hits : CurrentWallHits.Reset();
 
+}
+
+bool UCustomCharacterMovementComponent::CanStartClimbing()
+{
+	for (FHitResult& Hit : CurrentWallHits) 
+	{
+	
+		const FVector HorizontalNormal = Hit.Normal.GetSafeNormal2D();
+
+		/*Finding the angle between character's forward vector and the horizontal project normal by calculating the Arcossine of the dot product*/
+
+		const float HorizontalDot = FVector::DotProduct(UpdatedComponent->GetForwardVector(), -HorizontalNormal);
+		const float VerticalDot = FVector::DotProduct(Hit.Normal, HorizontalNormal);
+
+		const float HorizontalDegrees = FMath::RadiansToDegrees(FMath::Acos(HorizontalDot));
+
+		const bool bIsCeiling = FMath::IsNearlyZero(VerticalDot);
+
+		/* If the result is 0 this means vectors are perpendicular e.g flat ceilling */
+		if (HorizontalDegrees <= MinHorizontalDegreesToStartClimbing && !bIsCeiling)
+		{
+			return true;
+		}
+	
+	}
+
+
+	return false;
 }
