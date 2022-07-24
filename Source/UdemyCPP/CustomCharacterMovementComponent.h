@@ -43,5 +43,7 @@ private:
 
 	bool CanStartClimbing();
 
+	bool EyeHeightTrace(const float TraceDistance) const;
+
 
 };

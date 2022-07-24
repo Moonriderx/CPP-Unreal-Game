@@ -2,6 +2,9 @@
 
 
 #include "CustomCharacterMovementComponent.h"
+#include "GameFramework/Character.h"
+
+
 
 void UCustomCharacterMovementComponent::BeginPlay() 
 {
@@ -23,7 +26,7 @@ void UCustomCharacterMovementComponent::SweepAndStoreWallHits() /* the job of th
 {
 	const FCollisionShape CollisionShape = FCollisionShape::MakeCapsule(CollisionCapsuleRadius, CollisionCapsuleHalfHeight);
 
-	const FVector StartOffSet = UpdatedComponent->GetForwardVector() * 20;
+	const FVector StartOffSet = UpdatedComponent->GetForwardVector() * 20; // The UpdatedComponent is the component we move and update. We will use it throughout the project to retrieve information like the current location and rotation
 
 	// Avoid using the same Start/End location for a Sweep, as it doesn't trigger hits on Landscapes
 
@@ -63,4 +66,19 @@ bool UCustomCharacterMovementComponent::CanStartClimbing()
 
 
 	return false;
+}
+
+
+/* Trace forward the character eye height. If hit something that means there is a surface where we can hang on and climb */
+
+bool UCustomCharacterMovementComponent::EyeHeightTrace(const float TraceDistance) const 
+{
+
+	FHitResult UpperEdgeHit; 
+
+	const FVector Start = UpdatedComponent->GetComponentLocation() + (UpdatedComponent->GetUpVector() * GetCharacterOwner()->BaseEyeHeight);
+
+	const FVector End = Start + (UpdatedComponent->GetForwardVector() * TraceDistance);
+
+	return GetWorld()->LineTraceSingleByChannel(UpperEdgeHit, Start, End, ECC_WorldStatic, ClimbQueryParams);
 }
