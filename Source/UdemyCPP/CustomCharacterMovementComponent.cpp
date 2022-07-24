@@ -7,7 +7,22 @@
 
 
 
-void UCustomCharacterMovementComponent::BeginPlay() 
+void UCustomCharacterMovementComponent::TryClimbing()
+{
+
+	if (CanStartClimbing())
+	{
+		bWantsToClimb = true;
+	}
+
+}
+
+void UCustomCharacterMovementComponent::CancelClimbing()
+{
+	bWantsToClimb = false;
+}
+
+void UCustomCharacterMovementComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -25,7 +40,7 @@ void UCustomCharacterMovementComponent::TickComponent(float DeltaTime, ELevelTic
 void UCustomCharacterMovementComponent::OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity)
 {
 
-	if (CanStartClimbing())
+	if (bWantsToClimb)
 	{
 		SetMovementMode(EMovementMode::MOVE_Custom, ECustomMovementMode::CMOVE_Climbing);
 	}

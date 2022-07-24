@@ -226,6 +226,9 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AMainCharacter::ShiftKeyDown);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AMainCharacter::ShiftKeyUp);
 
+	PlayerInputComponent->BindAction("Climb", IE_Released, this, &AMainCharacter::Climb);
+	PlayerInputComponent->BindAction("Climb Exit State", IE_Pressed, this, &AMainCharacter::CancelClimb);
+
 	PlayerInputComponent->BindAction("Dash", IE_Pressed, this, &AMainCharacter::Dashing);
 
 	PlayerInputComponent->BindAction("LMB", IE_Pressed, this, &AMainCharacter::LMBDown);
@@ -377,3 +380,12 @@ void AMainCharacter::ShiftKeyUp()
 }
 
 
+void AMainCharacter::Climb()
+{
+	MovementComponent->TryClimbing();
+}
+
+void AMainCharacter::CancelClimb()
+{
+	MovementComponent->CancelClimbing();
+}

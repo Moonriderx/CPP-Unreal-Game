@@ -15,6 +15,11 @@ class UDEMYCPP_API UCustomCharacterMovementComponent : public UCharacterMovement
 	GENERATED_BODY()
 
 public:
+
+
+	void TryClimbing(); // function that will enable climbing
+
+	void CancelClimbing(); // function that exits climbing
 	
 protected:
 
@@ -32,6 +37,8 @@ private:
 	int CollisionCapsuleHalfHeight = 72;
 
 	FCollisionQueryParams ClimbQueryParams;
+
+	bool bWantsToClimb = false;
 
 private:
 
