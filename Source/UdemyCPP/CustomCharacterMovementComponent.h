@@ -45,5 +45,7 @@ private:
 
 	bool EyeHeightTrace(const float TraceDistance) const;
 
+	bool IsFacingSurface(float Steepness) const;
+
 
 };

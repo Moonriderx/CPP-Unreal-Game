@@ -57,7 +57,7 @@ bool UCustomCharacterMovementComponent::CanStartClimbing()
 		const bool bIsCeiling = FMath::IsNearlyZero(VerticalDot);
 
 		/* If the result is 0 this means vectors are perpendicular e.g flat ceilling */
-		if (HorizontalDegrees <= MinHorizontalDegreesToStartClimbing && !bIsCeiling)
+		if (HorizontalDegrees <= MinHorizontalDegreesToStartClimbing && !bIsCeiling && IsFacingSurface(VerticalDot))
 		{
 			return true;
 		}
@@ -81,4 +81,16 @@ bool UCustomCharacterMovementComponent::EyeHeightTrace(const float TraceDistance
 	const FVector End = Start + (UpdatedComponent->GetForwardVector() * TraceDistance);
 
 	return GetWorld()->LineTraceSingleByChannel(UpperEdgeHit, Start, End, ECC_WorldStatic, ClimbQueryParams);
+}
+
+/* Determing how steep the surface is. Calculating the line trace and calling EyeHeightTrace */
+
+bool UCustomCharacterMovementComponent::IsFacingSurface(const float Steepness) const
+{
+	constexpr float BaseLength = 80.f;
+
+	const float SteepnessMultiplier = 1 + (1 - Steepness) * 5;
+
+
+	return EyeHeightTrace(BaseLength * SteepnessMultiplier);
 }
