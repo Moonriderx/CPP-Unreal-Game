@@ -248,13 +248,23 @@ void AMainCharacter::MoveForward(float Value)
 {
 	if ((Controller != nullptr) && (Value != 0.0f)) 
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+		FVector Direction;
+		if (MovementComponent->IsClimbing())
+		{
+			Direction = FVector::CrossProduct(MovementComponent->GetClimbSurfaceNormal(), -GetActorRightVector());
+		}
+		else
+		{
+			// find out which way is forward
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
-		// create a FRotationMatrix from YawRotation.	
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			// create a FRotationMatrix from YawRotation.	
+			Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+			
+		}
 		AddMovementInput(Direction, Value);
+		
     }
 }
 
@@ -262,12 +272,21 @@ void AMainCharacter::MoveRight(float Value)
 {
 	if ((Controller != nullptr) && (Value != 0.0f))
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
+		FVector Direction;
+		if (MovementComponent->IsClimbing())
+		{
+			Direction = FVector::CrossProduct(MovementComponent->GetClimbSurfaceNormal(), GetActorUpVector());
+		}
+		else
+		{
+			// find out which way is forward
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0.f, Rotation.Yaw, 0.f);
 
-		// create a FRotationMatrix from YawRotation.	
-		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			// create a FRotationMatrix from YawRotation.	
+			Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+		}
+		
 		AddMovementInput(Direction, Value);
 	}
 
