@@ -42,8 +42,14 @@ private:
 	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta=(ClampMin = "0.0", ClampMax = "3000.0"))
 	float BrakingDecelerationClimbing = 550.f;
 
-	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "12.0"))
+	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "60.0"))
 	int ClimbingRotationSpeed = 6;
+
+	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "60.0"))
+	float ClimbingSnapSpeed = 4.f;
+
+	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "80.0"))
+	float DistanceFromSurface = 45.f;
 	
 	TArray<FHitResult> CurrentWallHits;
 

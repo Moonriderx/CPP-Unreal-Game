@@ -270,22 +270,45 @@ void UCustomCharacterMovementComponent::MoveAlongClimbingSurface(float deltaTime
 	if (Hit.Time < 1.f)
 	{
 		HandleImpact(Hit, deltaTime, Adjusted);
-		SlideAlongSurface(Adjusted, (1.f, -Hit.Time), Hit.Normal, Hit, true);
+		SlideAlongSurface(Adjusted, (1.f - Hit.Time), Hit.Normal, Hit, true);
 	}
 }
 
 void UCustomCharacterMovementComponent::SnapToClimbingSurface(float deltaTime) const
 {
+
+
+	const FVector Forward = UpdatedComponent->GetForwardVector();
+	const FVector Location = UpdatedComponent->GetComponentLocation();
+	const FQuat Rotation = UpdatedComponent->GetComponentQuat();
+
+	const FVector ForwardDifference = (CurrentClimbingPosition - Location).ProjectOnTo(Forward);
+	const FVector Offset = -CurrentClimbingNormal * (ForwardDifference.Length() - DistanceFromSurface);
+
+	constexpr bool bSweep = true;
+	UpdatedComponent->MoveComponent(Offset * ClimbingSnapSpeed * deltaTime, Rotation, bSweep);
+
 }
 
 
 void UCustomCharacterMovementComponent::ComputeSurfaceInfo()
 {
 
-	if (CurrentWallHits.Num() > 0)
+	CurrentClimbingNormal = FVector::ZeroVector;
+	CurrentClimbingPosition = FVector::ZeroVector;
+
+	if (CurrentWallHits.IsEmpty())
 	{
-		CurrentClimbingNormal = CurrentWallHits[0].Normal;
-		CurrentClimbingPosition = CurrentWallHits[0].ImpactPoint;
+		return;
 	}
+
+	for (const FHitResult& WallHit : CurrentWallHits)
+	{
+		CurrentClimbingPosition += WallHit.ImpactPoint;
+		CurrentClimbingNormal = WallHit.Normal;
+	}
+
+	CurrentClimbingPosition /= CurrentWallHits.Num();
+	CurrentClimbingNormal = CurrentClimbingNormal.GetSafeNormal();
 
 }
