@@ -53,6 +53,10 @@ private:
 
 	virtual void OnMovementUpdated(float DeltaSeconds, const FVector& OldLocation, const FVector& OldVelocity) override;
 
+	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
+
+	void PhysClimbing(float deltaTime, int32 Iterations);
+
 	void SweepAndStoreWallHits();
 
 	bool CanStartClimbing();
@@ -60,6 +64,8 @@ private:
 	bool EyeHeightTrace(const float TraceDistance) const;
 
 	bool IsFacingSurface(float Steepness) const;
+
+	
 
 
 };

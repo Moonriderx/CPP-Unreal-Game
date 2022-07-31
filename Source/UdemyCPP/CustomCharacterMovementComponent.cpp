@@ -128,8 +128,23 @@ bool UCustomCharacterMovementComponent::IsClimbing() const
 	return MovementMode == EMovementMode::MOVE_Custom && CustomMovementMode == ECustomMovementMode::CMOVE_Climbing; // set the modes
 }
 
+void UCustomCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterations)
+{
+	if (CustomMovementMode == ECustomMovementMode::CMOVE_Climbing)
+	{
+		PhysClimbing(deltaTime, Iterations);
+	}
+	Super::PhysCustom(deltaTime, Iterations);
+}
+
+void UCustomCharacterMovementComponent::PhysClimbing(float deltaTime, int32 Iterations)
+{
+}
+
 FVector UCustomCharacterMovementComponent::GetClimbSurfaceNormal() const
 {
 	// Temporary Solution
 	return CurrentWallHits.Num() > 0 ? CurrentWallHits[0].Normal : FVector::Zero();
 }
+
+
