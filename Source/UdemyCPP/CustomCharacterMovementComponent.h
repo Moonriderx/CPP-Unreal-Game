@@ -32,6 +32,18 @@ private:
 
 	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "1.0", ClampMax = "75.0"))
 	float MinHorizontalDegreesToStartClimbing = 25.f; // Control minimum Angle
+
+	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "10.0", ClampMax = "500.0"))
+	float MaxClimbingSpeed = 120.f;
+
+	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta=(ClampMin = "10.0", ClampMax = "2000.0"))
+	float MaxClimbAcceleration = 380.f;
+
+	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta=(ClampMin = "0.0", ClampMax = "3000.0"))
+	float BrakingDecelerationClimbing = 550.f;
+
+	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "12.0"))
+	int ClimbingRotationSpeed = 6;
 	
 	TArray<FHitResult> CurrentWallHits;
 
@@ -48,6 +60,9 @@ private:
 
 	bool bWantsToClimb = false;
 
+	FVector CurrentClimbingNormal;
+	FVector CurrentClimbingPosition;
+
 private:
 
 	virtual void BeginPlay() override;
@@ -59,6 +74,10 @@ private:
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
+
+	virtual float GetMaxSpeed() const override;
+
+	virtual float GetMaxAcceleration() const override;
 
 	void PhysClimbing(float deltaTime, int32 Iterations);
 
@@ -80,7 +99,11 @@ private:
 
 	bool IsFacingSurface(float Steepness) const;
 
-	bool ShouldStopClimbing();
+	bool ShouldStopClimbing() const;
+
+	FQuat GetClimbingRotation(float deltaTime) const;
+
+
 
 	
 
