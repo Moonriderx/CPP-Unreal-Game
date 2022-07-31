@@ -4,6 +4,7 @@
 #include "CustomCharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "CustomEnums.h"
+#include "Components/CapsuleComponent.h"
 
 void UCustomCharacterMovementComponent::BeginPlay()
 {
@@ -51,6 +52,9 @@ void UCustomCharacterMovementComponent::SweepAndStoreWallHits() /* the job of th
 	HitWall ? CurrentWallHits = Hits : CurrentWallHits.Reset();
 
 }
+
+
+
 
 bool UCustomCharacterMovementComponent::CanStartClimbing()
 {
@@ -107,6 +111,11 @@ bool UCustomCharacterMovementComponent::IsFacingSurface(const float Steepness) c
 	return EyeHeightTrace(BaseLength * SteepnessMultiplier);
 }
 
+bool UCustomCharacterMovementComponent::ShouldStopClimbing()
+{
+	return false;
+}
+
 
 void UCustomCharacterMovementComponent::TryClimbing()
 {
@@ -137,8 +146,66 @@ void UCustomCharacterMovementComponent::PhysCustom(float deltaTime, int32 Iterat
 	Super::PhysCustom(deltaTime, Iterations);
 }
 
+void UCustomCharacterMovementComponent::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
+{
+	if (IsClimbing())
+	{
+		bOrientRotationToMovement = false;
+
+		UCapsuleComponent* Capsule = CharacterOwner->GetCapsuleComponent();
+		Capsule->SetCapsuleHalfHeight(Capsule->GetUnscaledCapsuleHalfHeight() - ClimbingCollisionShrinkAmount);
+	}
+	
+	const bool bWasClimbing = PreviousMovementMode == MOVE_Custom && PreviousCustomMode == CMOVE_Climbing;
+	if (bWasClimbing)
+	{
+		bOrientRotationToMovement = true;
+
+		const FRotator StandRotation = FRotator(0, UpdatedComponent->GetComponentRotation().Yaw, 0);
+		UpdatedComponent->SetRelativeRotation(StandRotation);
+
+		UCapsuleComponent* Capsule = CharacterOwner->GetCapsuleComponent();
+		Capsule->SetCapsuleHalfHeight(Capsule->GetUnscaledCapsuleHalfHeight() + ClimbingCollisionShrinkAmount);
+
+		// Reset Velocity & Acceleration after exiting climbing mode
+
+		StopMovementImmediately();
+	}
+
+	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
+
+
+}
+
 void UCustomCharacterMovementComponent::PhysClimbing(float deltaTime, int32 Iterations)
 {
+
+	if (deltaTime < MIN_TICK_TIME)
+	{
+		return;
+	}
+
+	ComputeSurfaceInfo();
+
+	if (ShouldStopClimbing())
+	{
+		StopClimbing(deltaTime, Iterations);
+		return;
+	}
+
+	ComputeClimbingVelocity(deltaTime);
+
+	const FVector OldLocation = UpdatedComponent->GetComponentLocation();
+
+	MoveAlongClimbingSurface(deltaTime);
+
+	if (!HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity())
+	{
+		Velocity = (UpdatedComponent->GetComponentLocation() - OldLocation / deltaTime);
+	}
+
+	SnapToClimbingSurface(deltaTime);
+
 }
 
 FVector UCustomCharacterMovementComponent::GetClimbSurfaceNormal() const
@@ -147,4 +214,23 @@ FVector UCustomCharacterMovementComponent::GetClimbSurfaceNormal() const
 	return CurrentWallHits.Num() > 0 ? CurrentWallHits[0].Normal : FVector::Zero();
 }
 
+void UCustomCharacterMovementComponent::ComputeClimbingVelocity(float deltaTime)
+{
+}
 
+void UCustomCharacterMovementComponent::StopClimbing(float deltaTime, int32 Iterations)
+{
+}
+
+void UCustomCharacterMovementComponent::MoveAlongClimbingSurface(float deltaTime)
+{
+}
+
+void UCustomCharacterMovementComponent::SnapToClimbingSurface(float deltaTime) const
+{
+}
+
+
+void UCustomCharacterMovementComponent::ComputeSurfaceInfo()
+{
+}

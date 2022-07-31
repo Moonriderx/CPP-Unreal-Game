@@ -41,6 +41,9 @@ private:
 	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere)
 	int CollisionCapsuleHalfHeight = 72;
 
+	UPROPERTY(Category = "Character Movement Climbing", EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "80.0"))
+	float ClimbingCollisionShrinkAmount = 30;
+
 	FCollisionQueryParams ClimbQueryParams;
 
 	bool bWantsToClimb = false;
@@ -55,15 +58,29 @@ private:
 
 	virtual void PhysCustom(float deltaTime, int32 Iterations) override;
 
+	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
+
 	void PhysClimbing(float deltaTime, int32 Iterations);
 
 	void SweepAndStoreWallHits();
+
+	void ComputeSurfaceInfo();
+
+	void ComputeClimbingVelocity(float deltaTime);
+
+	void StopClimbing(float deltaTime, int32 Iterations);
+
+	void MoveAlongClimbingSurface(float deltaTime);
+
+	void SnapToClimbingSurface(float deltaTime) const;
 
 	bool CanStartClimbing();
 
 	bool EyeHeightTrace(const float TraceDistance) const;
 
 	bool IsFacingSurface(float Steepness) const;
+
+	bool ShouldStopClimbing();
 
 	
 
