@@ -221,7 +221,7 @@ void UCustomCharacterMovementComponent::PhysClimbing(float deltaTime, int32 Iter
 
 	if (!HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity())
 	{
-		Velocity = (UpdatedComponent->GetComponentLocation() - OldLocation / deltaTime);
+		Velocity = (UpdatedComponent->GetComponentLocation() - OldLocation) / deltaTime;
 	}
 
 	SnapToClimbingSurface(deltaTime);

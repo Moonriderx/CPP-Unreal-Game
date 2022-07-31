@@ -43,7 +43,7 @@ private:
 	float BrakingDecelerationClimbing = 550.f;
 
 	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "60.0"))
-	int ClimbingRotationSpeed = 6;
+	int ClimbingRotationSpeed = 6.f;
 
 	UPROPERTY(Category = "Character Movement : Climbing", EditAnywhere, meta = (ClampMin = "0.0", ClampMax = "60.0"))
 	float ClimbingSnapSpeed = 4.f;
