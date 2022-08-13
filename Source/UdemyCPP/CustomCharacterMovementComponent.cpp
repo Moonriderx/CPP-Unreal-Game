@@ -302,8 +302,16 @@ void UCustomCharacterMovementComponent::ComputeSurfaceInfo()
 		return;
 	}
 
+	const FVector Start = UpdatedComponent->GetComponentLocation();
+	const FCollisionShape CollisionShape = FCollisionShape::MakeSphere(6);
+
 	for (const FHitResult& WallHit : CurrentWallHits)
 	{
+		const FVector End = Start + (WallHit.ImpactPoint - Start).GetSafeNormal() * 120;
+		FHitResult AssistHit;
+
+		GetWorld()->SweepSingleByChannel(AssistHit, Start, End, FQuat::Identity, ECC_WorldStatic, CollisionShape, ClimbQueryParams);
+
 		CurrentClimbingPosition += WallHit.ImpactPoint;
 		CurrentClimbingNormal = WallHit.Normal;
 	}

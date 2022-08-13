@@ -121,6 +121,8 @@ void AMainCharacter::Tick(float DeltaTime)
 
 	float DeltaStamina = StaminaDrainRate * DeltaTime; // how much the stamina should change in this particular frame in order to drain or recover
 
+	// Fix the bug where if we press sprint button and no any other input, player will still dash in place and consume stamina
+
 	switch (StaminaStatus) 
 	{
 	case EStaminaStatus::ESS_Normal:
