@@ -121,12 +121,12 @@ void AMainCharacter::Tick(float DeltaTime)
 
 	float DeltaStamina = StaminaDrainRate * DeltaTime; // how much the stamina should change in this particular frame in order to drain or recover
 
-	// Fix the bug where if we press sprint button and no any other input, player will still dash in place and consume stamina
+	// Make Bool that shows if character can start sprint bCanStartSprint and check if Velocity != 0
 
 	switch (StaminaStatus) 
 	{
 	case EStaminaStatus::ESS_Normal:
-		if (bShiftKeyDown)
+		if (bShiftKeyDown && GetCharacterMovement()->Velocity != FVector::ZeroVector)
 		{
 			if (Stamina - DeltaStamina <= MinSprintStamina)
 			{
@@ -153,7 +153,7 @@ void AMainCharacter::Tick(float DeltaTime)
 		}
 		break;
 	case EStaminaStatus::ESS_BelowMinimum:
-		if (bShiftKeyDown)
+		if (bShiftKeyDown && GetCharacterMovement()->Velocity != FVector::ZeroVector)
 		{
 			if (Stamina - DeltaStamina <= 0.f)
 			{
