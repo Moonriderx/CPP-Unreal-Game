@@ -250,7 +250,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AMainCharacter::MoveForward(float Value)
 {
-	if ((Controller != nullptr) && (Value != 0.0f)) 
+	if ((Controller != nullptr) && (Value != 0.0f) && (!bAttacking)) // prevent us moving around if we are attacking
 	{
 		FVector Direction;
 		if (MovementComponent->IsClimbing())
@@ -274,7 +274,7 @@ void AMainCharacter::MoveForward(float Value)
 
 void AMainCharacter::MoveRight(float Value)
 {
-	if ((Controller != nullptr) && (Value != 0.0f))
+	if ((Controller != nullptr) && (Value != 0.0f) && (!bAttacking)) // prevent us moving around if we are attacking
 	{
 		FVector Direction;
 		if (MovementComponent->IsClimbing())
@@ -350,14 +350,27 @@ void AMainCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
 
 void AMainCharacter::Attack()
 {
-	bAttacking = true;
-
-	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
-
-	if (AnimInstance && CombatMontage)
+	if (!bAttacking)
 	{
-		AnimInstance->Montage_Play(CombatMontage, 1.35f);
-		AnimInstance->Montage_JumpToSection(FName("Attack_1"), CombatMontage);
+		bAttacking = true;
+
+		UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+		if (AnimInstance && CombatMontage)
+		{
+			AnimInstance->Montage_Play(CombatMontage, 1.35f);
+			AnimInstance->Montage_JumpToSection(FName("Attack_1"), CombatMontage);
+		}
+	}
+	}
+	
+
+void AMainCharacter::AttackEnd()
+{
+	bAttacking = false;
+	if (bLMBDown)
+	{
+		Attack();
 	}
 }
 
