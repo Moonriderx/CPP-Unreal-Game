@@ -11,6 +11,8 @@
 #include "Weapon.h"
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "UdemyCPP/CustomCharacterMovementComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimInstance.h"
 
 
 
@@ -316,6 +318,13 @@ void AMainCharacter::LMBDown()
 			SetActiveOverlappingItem(nullptr);
 		}
 	}
+	else if (EquippedWeapon)
+	{
+		Attack();
+
+	}
+
+
 }
 
 void AMainCharacter::LMBUp()
@@ -337,6 +346,19 @@ void AMainCharacter::SetEquippedWeapon(AWeapon* WeaponToSet)
 	}
 	EquippedWeapon = WeaponToSet;
 
+}
+
+void AMainCharacter::Attack()
+{
+	bAttacking = true;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+
+	if (AnimInstance && CombatMontage)
+	{
+		AnimInstance->Montage_Play(CombatMontage, 1.35f);
+		AnimInstance->Montage_JumpToSection(FName("Attack_1"), CombatMontage);
+	}
 }
 
 void AMainCharacter::SetMovementStatus(EMovementStatus Status)
