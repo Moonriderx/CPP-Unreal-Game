@@ -82,7 +82,14 @@ void AEnemy::MoveToTarget(class AMainCharacter* Target)
 
 	if (AIController)
 	{
-		
+		FAIMoveRequest MoveRequest;
+		MoveRequest.SetGoalActor(Target);
+		MoveRequest.SetAcceptanceRadius(5.0f);
+
+		FNavPathSharedPtr NavPath;
+
+		AIController->MoveTo(MoveRequest, &NavPath);
+
 	}
 }
 
